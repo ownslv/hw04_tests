@@ -1,0 +1,48 @@
+<!DOCTYPE html> <!-- Используется html 5 версии -->
+{% extends 'base.html' %} 
+<html lang="ru"> <!-- Язык сайта - русский -->
+  <head>    
+    {% include 'includes/base.html' %}
+    <title>{% block title %}{{ title }}{% endblock %}</title>
+  </head>
+  <body>
+    <header>
+      {% include 'includes/base.html' %}
+    </header>
+    <main>
+      {% block content %}
+      <!-- класс py-5 создает отступы сверху и снизу блока -->
+      <div class="container py-5">
+        <h1>{{ group.title }}</h1>
+        <p>
+          {{ group.description }}
+        </p>
+        <article>
+          {% for post in page_obj %}
+          <ul>
+            <li>
+              Автор: {{ post.author.get_full_name }}
+            </li>
+            <li>
+              Дата публикации: {{ post.pub_date|date:"d E Y" }}
+            </li>
+          </ul>
+          <p>{{ post.text }}</p>    
+          {% if post.group %}
+            <p>
+              <a href="{% url 'posts:group_list' post.group.slug %}">все записи группы</a>
+            </p>
+          {% endif %}
+          {% if not forloop.last %}<hr>{% endif %}
+        {% endfor %}
+        {% include 'posts/includes/paginator.html' %}
+        </article>
+        <!-- под последним постом нет линии -->
+      </div>
+      {% endblock %}  
+    </main>
+    <footer class="page-footer font-small blue border-top">
+      {% include 'includes/base.html' %}   
+    </footer>
+  </body>
+</html>
