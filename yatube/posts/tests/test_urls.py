@@ -4,6 +4,7 @@ from posts.models import Post, Group
 
 User = get_user_model()
 
+
 class PostURLTests(TestCase):
     @classmethod
     def setUpClass(cls):
@@ -22,14 +23,12 @@ class PostURLTests(TestCase):
             text="Тестовая запись",
         )
 
-
     def setUp(self):
         self.guest_client = Client()
         self.authorized_client = Client()
         self.authorized_client.force_login(self.user)
         self.authorized_client_not_author = Client()
         self.authorized_client_not_author.force_login(self.user_not_author)
-
 
     def test_guest_urls_access(self):
         """Страницы доступные любому пользователю."""
@@ -55,7 +54,7 @@ class PostURLTests(TestCase):
             "/profile/TestAuthor/",
             f"/posts/{self.post.pk}/",
             f"/posts/{self.post.pk}/edit/",
-            f"/create/",
+            "/create/",
         }
         for address in url_names:
             with self.subTest(address=address):
@@ -72,7 +71,7 @@ class PostURLTests(TestCase):
             f"/posts/{self.post.pk}/edit/": (
                 f"/auth/login/?next=/posts/{self.post.pk}/edit/"
             ),
-            f"/create/": "/auth/login/?next=/create/",
+            "/create/": "/auth/login/?next=/create/",
         }
         for address, redirect_address in url_names_redirects.items():
             with self.subTest(address=address):
@@ -98,7 +97,7 @@ class PostURLTests(TestCase):
             "/profile/TestAuthor/": "posts/profile.html",
             f"/posts/{self.post.pk}/": "posts/post_detail.html",
             f"/posts/{self.post.pk}/edit/": "posts/create_post.html",
-            f"/create/": "posts/create_post.html",
+            "/create/": "posts/create_post.html",
         }
         for address, template in url_names_templates.items():
             with self.subTest(address=address):
