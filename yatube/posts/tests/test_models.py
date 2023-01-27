@@ -25,7 +25,7 @@ class PostModelTest(TestCase):
         """Проверяем, что у моделей поста корректно работает __str__."""
 
         post = PostModelTest.post
-        expected_object_name = post.text
+        expected_object_name = post.text[:15]
         self.assertEqual(expected_object_name, str(post))
 
 
